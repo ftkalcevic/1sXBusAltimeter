@@ -1,0 +1,5 @@
+Source/.vs/*
+Source/Debug/*
+Hardware/History/*
+__Previews*/
+Source/Release*/
