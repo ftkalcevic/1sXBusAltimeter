@@ -20,8 +20,10 @@
 *
 ****************************************************************************/
 
-#include <ioavr.h>
-#include <inavr.h>
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include "USI_TWI_Slave.h"
 
 /*! Static Variables
@@ -114,8 +116,7 @@ unsigned char USI_TWI_Data_In_Receive_Buffer( void )
  * for reception of the "TWI Address" packet.
  */
 
-#pragma vector=USI_START_VECTOR
-__interrupt void USI_Start_Condition_ISR(void)
+ISR(USI_START_VECTOR)	// USI_Start_Condition_ISR(void)
 {
     unsigned char tmpUSISR;                                         // Temporary variable to store volatile
     tmpUSISR = USISR;                                               // Not necessary, but prevents warnings
@@ -137,8 +138,7 @@ __interrupt void USI_Start_Condition_ISR(void)
  * Handels all the comunication. Is disabled only when waiting
  * for new Start Condition.
  */
-#pragma vector=USI_OVERFLOW_VECTOR
-__interrupt void USI_Counter_Overflow_ISR(void)
+ISR(USI_OVERFLOW_VECTOR)	// void USI_Counter_Overflow_ISR(void)
 {
   unsigned char tmpTxTail;     // Temporary variables to store volatiles
   unsigned char tmpUSIDR;
