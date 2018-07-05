@@ -1,5 +1,6 @@
-.vs/*
-Debug/*
+Software/.vs/*
+Software/Debug/*
 Hardware/History/*
+Hardware/Logs/*
 __Previews*/
-Release*/
+Software/Release*/
