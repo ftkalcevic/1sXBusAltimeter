@@ -1,3 +1,5 @@
+// Hacked version to support only 1 buffer.
+
 // This file has been prepared for Doxygen automatic documentation generation.
 /*! \file ********************************************************************
 *
@@ -42,6 +44,10 @@ static volatile uint8_t TWI_RxTail;
 static uint8_t TWI_TxBuf[TWI_TX_BUFFER_SIZE];
 static volatile uint8_t TWI_TxHead;
 static volatile uint8_t TWI_TxTail;
+
+// global
+UN_TELEMETRY telemetry_buffer;
+static uint8_t buffer_ptr;
 
 /*! \brief Flushes the TWI buffers
  */
@@ -152,7 +158,10 @@ ISR(USI_OVERFLOW_VECTOR)	// void USI_Counter_Overflow_ISR(void)
       if ((USIDR == 0) || (( USIDR>>1 ) == TWI_slaveAddress))
       {
         if ( USIDR & 0x01 )
+		{
+		  buffer_ptr = 0;
           USI_TWI_Overflow_State = USI_SLAVE_SEND_DATA;
+		}
         else
           USI_TWI_Overflow_State = USI_SLAVE_REQUEST_DATA;
           SET_USI_TO_SEND_ACK();
@@ -176,12 +185,10 @@ ISR(USI_OVERFLOW_VECTOR)	// void USI_Counter_Overflow_ISR(void)
     // Copy data from buffer to USIDR and set USI to shift byte. Next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
     case USI_SLAVE_SEND_DATA:
 
-      // Get data from Buffer
-      tmpTxTail = TWI_TxTail;           // Not necessary, but prevents warnings
-      if ( TWI_TxHead != tmpTxTail )
+      if ( buffer_ptr < sizeof(telemetry_buffer.rawb) )
       {
-        TWI_TxTail = ( TWI_TxTail + 1 ) & TWI_TX_BUFFER_MASK;
-        USIDR = TWI_TxBuf[TWI_TxTail];
+        USIDR = telemetry_buffer.rawb[buffer_ptr];
+		buffer_ptr++;
       }
       else // If the buffer is empty then:
       {

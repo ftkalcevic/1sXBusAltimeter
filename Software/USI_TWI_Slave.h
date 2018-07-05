@@ -1,3 +1,5 @@
+// Hacked version to support only 1 buffer.
+
 // This file has been prepared for Doxygen automatic documentation generation.
 /*! \file ********************************************************************
 *
@@ -22,11 +24,16 @@
 *
 ****************************************************************************/
 //! Prototypes
+
+#include "XBus.h"
+
 void          USI_TWI_Slave_Initialise( unsigned char );
 void          USI_TWI_Transmit_Byte( unsigned char );
 unsigned char USI_TWI_Receive_Byte( void );
 unsigned char USI_TWI_Data_In_Receive_Buffer( void );
 void          Timer_Init(void);
+
+extern UN_TELEMETRY telemetry_buffer;
 
 #define TRUE                1
 #define FALSE               0
@@ -95,10 +102,10 @@ typedef     unsigned char       uint8_t;
     #define DDR_USI             DDRB
     #define PORT_USI            PORTB
     #define PIN_USI             PINB
-    #define PORT_USI_SDA        PORTB0
-    #define PORT_USI_SCL        PORTB2
-    #define PIN_USI_SDA         PINB0
-    #define PIN_USI_SCL         PINB2
+    #define PORT_USI_SDA        PB0
+    #define PORT_USI_SCL        PB2
+    #define PIN_USI_SDA         PB0
+    #define PIN_USI_SCL         PB2
     #define USI_START_COND_INT  USISIF
     #define USI_START_VECTOR    USI_START_vect
     #define USI_OVERFLOW_VECTOR USI_OVF_vect
