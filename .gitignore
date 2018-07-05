@@ -1,5 +1,5 @@
-Source/.vs/*
-Source/Debug/*
+.vs/*
+Debug/*
 Hardware/History/*
 __Previews*/
-Source/Release*/
+Release*/
