@@ -1,3 +1,6 @@
+// From http://extremeelectronics.co.in/avr-tutorials/software-i2c-library-for-avr-mcus/, including fixes from the article discussion.
+
+
 /**********************************************************
 
 Software I2C Library for AVR Devices.
@@ -15,24 +18,24 @@ www.eXtremeElectronics.co.in
 I/O Configuration 
 */
 
-#define SCLPORT	PORTD	//TAKE PORTD as SCL OUTPUT WRITE
-#define SCLDDR	DDRD	//TAKE DDRB as SCL INPUT/OUTPUT configure
+#define SCLPORT	PORTB	// SCL PORT
+#define SCLDDR	DDRB	// SCL DDR
 
-#define SDAPORT	PORTD	//TAKE PORTD as SDA OUTPUT WRITE
-#define SDADDR	DDRD	//TAKE PORTD as SDA INPUT configure
+#define SDAPORT	PORTB	// SDA PORT
+#define SDADDR	DDRB	// SDA DDR
 
-#define SDAPIN	PIND	//TAKE PORTD TO READ DATA
-#define SCLPIN	PIND	//TAKE PORTD TO READ DATA
+#define SDAPIN	PINB	// SDA PIN register
+#define SCLPIN	PINB	// SCL PIN register
 
-#define SCL	PD0		//PORTD.0 PIN AS SCL PIN
-#define SDA	PD1		//PORTD.1 PIN AS SDA PIN
+#define SCL	PB4			// SCL pin
+#define SDA	PB3			// SDA pin
 
 
-#define SOFT_I2C_SDA_LOW	SDADDR|=((1<<SDA))
-#define SOFT_I2C_SDA_HIGH	SDADDR&=(~(1<<SDA))
+#define SOFT_I2C_SDA_LOW	SDADDR |= ((1<<SDA))
+#define SOFT_I2C_SDA_HIGH	SDADDR &= (~(1<<SDA))
 
-#define SOFT_I2C_SCL_LOW	SCLDDR|=((1<<SCL))
-#define SOFT_I2C_SCL_HIGH	SCLDDR&=(~(1<<SCL))
+#define SOFT_I2C_SCL_LOW	SCLDDR |= ((1<<SCL))
+#define SOFT_I2C_SCL_HIGH	SCLDDR &= (~(1<<SCL))
 
 
 /**********************************************************

@@ -1,3 +1,6 @@
+// From http://extremeelectronics.co.in/avr-tutorials/software-i2c-library-for-avr-mcus/, including fixes from the article discussion.
+
+
 /**********************************************************
 
 Software I2C Library for AVR Devices.
@@ -12,13 +15,13 @@ www.eXtremeElectronics.co.in
 
 #include "i2csoft.h"
 
-#define Q_DEL _delay_us(10)	// 1us delay 100kHz
-#define H_DEL _delay_us(10)
+#define Q_DEL _delay_loop_2(3)
+#define H_DEL _delay_loop_2(5)
 
 void SoftI2CInit()
 {
-	SDAPORT&=(1<<SDA);
-	SCLPORT&=(1<<SCL);
+	SDAPORT&=~(1<<SDA);
+	SCLPORT&=~(1<<SCL);
 	
 	SOFT_I2C_SDA_HIGH;	
 	SOFT_I2C_SCL_HIGH;	
@@ -91,9 +94,9 @@ uint8_t SoftI2CWriteByte(uint8_t data)
 uint8_t SoftI2CReadByte(uint8_t ack)
 {
 	uint8_t data=0x00;
-	uint8_t i;
+	uint8_t mask;
 			
-	for(i=0;i<8;i++)
+	for(mask=0x80;mask;mask>>=1)
 	{
 			
 		SOFT_I2C_SCL_LOW;
@@ -104,8 +107,7 @@ uint8_t SoftI2CReadByte(uint8_t ack)
 		while((SCLPIN & (1<<SCL))==0);
 		
 		if(SDAPIN &(1<<SDA))
-			data|=(0x80>>i);
-			
+			data|=mask;
 	}
 		
 	SOFT_I2C_SCL_LOW;
@@ -126,6 +128,8 @@ uint8_t SoftI2CReadByte(uint8_t ack)
 	
 	SOFT_I2C_SCL_LOW;
 	H_DEL;
+	
+	SOFT_I2C_SDA_HIGH; 
 			
 	return data;
 	

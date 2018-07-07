@@ -37,26 +37,24 @@ static volatile unsigned char USI_TWI_Overflow_State;
 
 /*! Local variables
  */
-static uint8_t TWI_RxBuf[TWI_RX_BUFFER_SIZE];
-static volatile uint8_t TWI_RxHead;
-static volatile uint8_t TWI_RxTail;
+//static uint8_t TWI_RxBuf[TWI_RX_BUFFER_SIZE];
+//static volatile uint8_t TWI_RxHead;
+//static volatile uint8_t TWI_RxTail;
+//
+//static uint8_t TWI_TxBuf[TWI_TX_BUFFER_SIZE];
+//static volatile uint8_t TWI_TxHead;
+//static volatile uint8_t TWI_TxTail;
 
-static uint8_t TWI_TxBuf[TWI_TX_BUFFER_SIZE];
-static volatile uint8_t TWI_TxHead;
-static volatile uint8_t TWI_TxTail;
-
-// global
-UN_TELEMETRY telemetry_buffer;
 static uint8_t buffer_ptr;
 
 /*! \brief Flushes the TWI buffers
  */
 void Flush_TWI_Buffers(void)
 {
-    TWI_RxTail = 0;
-    TWI_RxHead = 0;
-    TWI_TxTail = 0;
-    TWI_TxHead = 0;
+    //TWI_RxTail = 0;
+    //TWI_RxHead = 0;
+    //TWI_TxTail = 0;
+    //TWI_TxHead = 0;
 }
 
 //********** USI_TWI functions **********//
@@ -85,37 +83,37 @@ void USI_TWI_Slave_Initialise( unsigned char TWI_ownAddress )
 
 /*! \brief Puts data in the transmission buffer, Waits if buffer is full.
 */
-void USI_TWI_Transmit_Byte( unsigned char data )
-{
-    unsigned char tmphead;
-
-    tmphead = ( TWI_TxHead + 1 ) & TWI_TX_BUFFER_MASK;         // Calculate buffer index.
-    while ( tmphead == TWI_TxTail );                           // Wait for free space in buffer.
-    TWI_TxBuf[tmphead] = data;                                 // Store data in buffer.
-    TWI_TxHead = tmphead;                                      // Store new index.
-}
+//void USI_TWI_Transmit_Byte( unsigned char data )
+//{
+    //unsigned char tmphead;
+//
+    //tmphead = ( TWI_TxHead + 1 ) & TWI_TX_BUFFER_MASK;         // Calculate buffer index.
+    //while ( tmphead == TWI_TxTail );                           // Wait for free space in buffer.
+    //TWI_TxBuf[tmphead] = data;                                 // Store data in buffer.
+    //TWI_TxHead = tmphead;                                      // Store new index.
+//}
 
 /*! \brief Returns a byte from the receive buffer. Waits if buffer is empty.
  */
-unsigned char USI_TWI_Receive_Byte( void )
-{
-    unsigned char tmptail;
-    unsigned char tmpRxTail;                                  // Temporary variable to store volatile
-    tmpRxTail = TWI_RxTail;                                   // Not necessary, but prevents warnings
-    while ( TWI_RxHead == tmpRxTail );
-    tmptail = ( TWI_RxTail + 1 ) & TWI_RX_BUFFER_MASK;        // Calculate buffer index
-    TWI_RxTail = tmptail;                                     // Store new index
-    return TWI_RxBuf[tmptail];                                // Return data from the buffer.
-}
+//unsigned char USI_TWI_Receive_Byte( void )
+//{
+    //unsigned char tmptail;
+    //unsigned char tmpRxTail;                                  // Temporary variable to store volatile
+    //tmpRxTail = TWI_RxTail;                                   // Not necessary, but prevents warnings
+    //while ( TWI_RxHead == tmpRxTail );
+    //tmptail = ( TWI_RxTail + 1 ) & TWI_RX_BUFFER_MASK;        // Calculate buffer index
+    //TWI_RxTail = tmptail;                                     // Store new index
+    //return TWI_RxBuf[tmptail];                                // Return data from the buffer.
+//}
 
 /*! \brief Check if there is data in the receive buffer.
  */
-unsigned char USI_TWI_Data_In_Receive_Buffer( void )
-{
-    unsigned char tmpRxTail;                            // Temporary variable to store volatile
-    tmpRxTail = TWI_RxTail;                             // Not necessary, but prevents warnings
-    return ( TWI_RxHead != tmpRxTail );                 // Return 0 (FALSE) if the receive buffer is empty.
-}
+//unsigned char USI_TWI_Data_In_Receive_Buffer( void )
+//{
+    //unsigned char tmpRxTail;                            // Temporary variable to store volatile
+    //tmpRxTail = TWI_RxTail;                             // Not necessary, but prevents warnings
+    //return ( TWI_RxHead != tmpRxTail );                 // Return 0 (FALSE) if the receive buffer is empty.
+//}
 
 /*! \brief Usi start condition ISR
  * Detects the USI_TWI Start Condition and intialises the USI
@@ -146,8 +144,8 @@ ISR(USI_START_VECTOR)	// USI_Start_Condition_ISR(void)
  */
 ISR(USI_OVERFLOW_VECTOR)	// void USI_Counter_Overflow_ISR(void)
 {
-  unsigned char tmpTxTail;     // Temporary variables to store volatiles
-  unsigned char tmpUSIDR;
+  //unsigned char tmpTxTail;     // Temporary variables to store volatiles
+  //unsigned char tmpUSIDR;
 
 
   switch (USI_TWI_Overflow_State)
@@ -162,8 +160,8 @@ ISR(USI_OVERFLOW_VECTOR)	// void USI_Counter_Overflow_ISR(void)
 		  buffer_ptr = 0;
           USI_TWI_Overflow_State = USI_SLAVE_SEND_DATA;
 		}
-        else
-          USI_TWI_Overflow_State = USI_SLAVE_REQUEST_DATA;
+        //else
+          //USI_TWI_Overflow_State = USI_SLAVE_REQUEST_DATA;
           SET_USI_TO_SEND_ACK();
       }
       else
@@ -215,9 +213,9 @@ ISR(USI_OVERFLOW_VECTOR)	// void USI_Counter_Overflow_ISR(void)
     // Copy data from USIDR and send ACK. Next USI_SLAVE_REQUEST_DATA
     case USI_SLAVE_GET_DATA_AND_SEND_ACK:
       // Put data into Buffer
-      tmpUSIDR = USIDR;             // Not necessary, but prevents warnings
-      TWI_RxHead = ( TWI_RxHead + 1 ) & TWI_RX_BUFFER_MASK;
-      TWI_RxBuf[TWI_RxHead] = tmpUSIDR;
+      //tmpUSIDR = USIDR;             // Not necessary, but prevents warnings
+      //TWI_RxHead = ( TWI_RxHead + 1 ) & TWI_RX_BUFFER_MASK;
+      //TWI_RxBuf[TWI_RxHead] = tmpUSIDR;
 
       USI_TWI_Overflow_State = USI_SLAVE_REQUEST_DATA;
       SET_USI_TO_SEND_ACK();
