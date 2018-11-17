@@ -118,7 +118,7 @@
       <Value>%24(PackRepoDir)\atmel\ATtiny_DFP\1.3.147\include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
-  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
   <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
   <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
@@ -138,6 +138,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="altitudemap.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Endianness.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="i2csoft.c">
       <SubType>compile</SubType>
     </Compile>
@@ -151,6 +157,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="USI_TWI_Slave.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="XBus.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
